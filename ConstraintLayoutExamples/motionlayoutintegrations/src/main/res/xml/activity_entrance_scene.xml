@@ -1,16 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<MotionScene 
+<!--
+  ~ Copyright (C) 2020 The Android Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<MotionScene
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:motion="http://schemas.android.com/apk/res-auto">
 
-    <ConstraintSet android:id="@+id/Welcome" >
+    <!-- This animation uses a series of autoprogress between different ConstraintSet to build
+    keyframes of the animation.
+
+    As the animation plays, MotionLayout will display each ConstraintSet in turn.
+
+    Each ConstraintSet uses deriveConstraintsFrom the previous constraint set to only specify the
+    changes needed for the next KeyFrame.
+
+    The structure of this animation is best viewed and edited in the Motion
+    Editor in Android Studio
+    -->
+    <ConstraintSet android:id="@+id/initial" >
         <Constraint
             android:id="@+id/scrolling_background"
             motion:layout_constraintBottom_toBottomOf="parent"
             motion:layout_constraintStart_toStartOf="parent"
             motion:layout_constraintEnd_toEndOf="parent"
             android:layout_width="0dp"
-            android:layout_height="4478px"
+            android:layout_height="wrap_content"
             android:alpha="0"
             />
     </ConstraintSet>
@@ -21,7 +48,7 @@
             motion:layout_constraintStart_toStartOf="parent"
             motion:layout_constraintEnd_toEndOf="parent"
             android:layout_width="0dp"
-            android:layout_height="4478px"
+            android:layout_height="2000dp"
             android:translationY="100px"
             />
     </ConstraintSet>
@@ -36,7 +63,7 @@
             motion:layout_constraintEnd_toEndOf="parent"
             motion:layout_constraintVertical_bias="0.80"
             android:layout_width="0dp"
-            android:layout_height="4478px"
+            android:layout_height="2000dp"
             />
     </ConstraintSet>
     <ConstraintSet
@@ -111,7 +138,7 @@
             motion:layout_constraintEnd_toEndOf="parent"
             motion:layout_constraintVertical_bias="0.70"
             android:layout_width="0dp"
-            android:layout_height="4478px"
+            android:layout_height="2000dp"
             />
     </ConstraintSet>
     <ConstraintSet
@@ -123,7 +150,7 @@
             motion:layout_constraintStart_toStartOf="parent"
             motion:layout_constraintEnd_toEndOf="parent"
             android:layout_width="0dp"
-            android:layout_height="4478px"
+            android:layout_height="2000dp"
             />
         <Constraint
             android:id="@+id/card1"
@@ -172,24 +199,10 @@
             android:layout_marginEnd="16dp"
             />
     </ConstraintSet>
-    <ConstraintSet
-        android:id="@+id/zoom_pan"
-        motion:deriveConstraintsFrom="@+id/second_half" >
-        <Constraint
-            android:id="@+id/scrolling_background"
-            motion:layout_constraintTop_toTopOf="parent"
-            motion:layout_constraintStart_toStartOf="parent"
-            motion:layout_constraintEnd_toEndOf="parent"
-            android:layout_width="0dp"
-            android:layout_height="4478px"
-            android:scaleX="2"
-            android:scaleY="2"
-            android:rotation="15"
-            android:translationX="-100dp"
-            android:translationY="100dp" />
-    </ConstraintSet>
+    <!-- Each transition uses animateToEnd to combine a sequence of smaller animations into one
+    big entrance animation. -->
     <Transition
-        motion:constraintSetStart="@+id/Welcome"
+        motion:constraintSetStart="@+id/initial"
         motion:constraintSetEnd="@+id/empty"
         motion:motionInterpolator="linear"
         motion:autoTransition="animateToEnd"
@@ -260,23 +273,4 @@
                 />
         </KeyFrameSet>
     </Transition>
-    <Transition
-        motion:constraintSetStart="@+id/second_half"
-        motion:constraintSetEnd="@+id/zoom_pan"
-        motion:autoTransition="animateToEnd"
-        motion:duration="20000"
-        motion:motionInterpolator="easeInOut" >
-        <KeyFrameSet >
-            <KeyAttribute
-                motion:motionTarget="@+id/scrolling_background"
-                motion:framePosition="50"
-                android:translationY="200dp" />
-        </KeyFrameSet>
-    </Transition>
-    <Transition
-        motion:constraintSetStart="@+id/zoom_pan"
-        motion:constraintSetEnd="@+id/second_half"
-        motion:autoTransition="animateToEnd"
-        motion:duration="20000"
-        motion:motionInterpolator="easeInOut" />
 </MotionScene>
